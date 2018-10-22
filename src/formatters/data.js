@@ -18,13 +18,8 @@ function formatCborData (data) {
 }
 
 function replaceCborLinks (data) {
-  if (data && data['/'] && Object.keys(data).length === 1) {
-    try {
-      return { '/': new CID(data['/']).toBaseEncodedString() }
-    } catch (err) {
-      debug(err)
-      return data
-    }
+  if (CID.isCID(data)) {
+    return { '/': data.toBaseEncodedString() }
   } else if (Array.isArray(data)) {
     return data.map(replaceCborLinks)
   } else if (typeof data === 'object') {

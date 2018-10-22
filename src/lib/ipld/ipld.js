@@ -4,11 +4,32 @@ const isIpfs = require('is-ipfs')
 const CID = require('cids')
 const debug = require('debug')('ipld-explorer-cli:lib:ipld')
 const parsePath = require('./parse-ipld-path')
+// Import all available formats
+const ipldBitcoin = require('ipld-bitcoin')
+const ipldDagPb = require('ipld-dag-pb')
+const ipldDagCbor = require('ipld-dag-cbor')
+const ipldEthAccountSnapshot = require('ipld-ethereum').ethAccountSnapshot
+const ipldEthBlock = require('ipld-ethereum').ethBlock
+const ipldEthBlockList = require('ipld-ethereum').ethBlockList
+const ipldEthStateTrie = require('ipld-ethereum').ethStateTrie
+const ipldEthStorageTrie = require('ipld-ethereum').ethStorageTrie
+const ipldEthTx = require('ipld-ethereum').ethTx
+const ipldEthtrie = require('ipld-ethereum').ethTxTrie
+const ipldGit = require('ipld-git')
+const ipldRaw = require('ipld-raw')
+const ipldZcash = require('ipld-zcash')
 
 // A better IPLD™️
 class Ipld {
   constructor (bs) {
-    this._ipld = new _Ipld(bs)
+    this._ipld = new _Ipld({
+      blockService: bs,
+      formats: [
+        ipldBitcoin, ipldDagPb, ipldDagCbor, ipldEthAccountSnapshot,
+        ipldEthBlock, ipldEthBlockList, ipldEthStateTrie, ipldEthStorageTrie,
+        ipldEthTx, ipldEthtrie, ipldGit, ipldRaw, ipldZcash
+      ]
+    })
     this._bs = bs
   }
 
